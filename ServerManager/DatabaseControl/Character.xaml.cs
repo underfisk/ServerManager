@@ -1,43 +1,37 @@
 ﻿using MahApps.Metro.Controls;
 using MahApps.Metro.Controls.Dialogs;
 using System;
-using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
+using ServerManager.Core;
 
 namespace ServerManager.DatabaseControl
 {
-
     public partial class Character : MetroWindow
     {
-        public Character()
-        {
-            InitializeComponent();
-        }
+        /// <summary>
+        /// Initializes GUI components
+        /// </summary>
+        public Character() => InitializeComponent();
 
-        getInfos get = new getInfos();
+        /// <summary>
+        /// Handles the cancel button click
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void cancelBtn_Click(object sender, RoutedEventArgs e) => Close();
 
-        private void cancelBtn_Click(object sender, RoutedEventArgs e)
-        {
-            this.Close();
-        }
 
-
-        //If dont need to find but i do due to protection level, and i set the values to textbox for user can edit
+        /// <summary>
+        /// Tries to find a character in the database with the given string (name)
+        /// </summary>
+        /// <param name="s"></param>
+        /// <returns></returns>
         public bool searchCharacter(string s)
         {
-            using (var con = new SqlConnection(get.cn))
+            using (var con = new SqlConnection(DekaronQueries.cn))
             {
                 try
                 {
@@ -49,7 +43,6 @@ namespace ServerManager.DatabaseControl
                         SqlDataReader re = cmd.ExecuteReader();
                         while (re.Read())
                         {
-                            //show by what i want fom db using the respective name such i wanna know the user_no, etc and show in textbox so i'll return 
                             charname.Text = re["character_name"].ToString();
                             charnumber.Text = re["character_no"].ToString();
                             usernumber.Text = re["user_no"].ToString();
@@ -96,8 +89,6 @@ namespace ServerManager.DatabaseControl
                             divisiongrade.Text = re["wDivisionGrade"].ToString();
                             grade.Text = re["wGrade"].ToString();
                             ppoints.Text = re["dwLowPPoint"].ToString();
-
-
                         }
 
                         con.Close();
@@ -112,11 +103,15 @@ namespace ServerManager.DatabaseControl
             return false;
         }
 
-        //Update whole rows, its such a big querry..
+        /// <summary>
+        /// Updates the character in the database
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private async void saveBtn_Click(object sender, RoutedEventArgs e)
         {
             byte[] theBytes = Encoding.UTF8.GetBytes("0");
-            using (var con = new SqlConnection(get.cn))
+            using (var con = new SqlConnection(DekaronQueries.cn))
             {
                 try
                 {
@@ -198,7 +193,7 @@ namespace ServerManager.DatabaseControl
                         //Now execute
                         cmd.ExecuteNonQuery();
                         con.Close();
-                        await this.ShowMessageAsync("Character updated", "Your character: [" + charname.Text +"] was been updated.");
+                        await this.ShowMessageAsync("Character updated", $"Your character: {charname.Text} was been updated.");
                     }
                 }
                 catch (Exception ex)

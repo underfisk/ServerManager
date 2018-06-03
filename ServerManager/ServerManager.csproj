@@ -100,14 +100,14 @@
     <Compile Include="DatabaseControl\Register.xaml.cs">
       <DependentUpon>Register.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Core\dbfunc.cs" />
-    <Compile Include="Core\getInfos.cs" />
+    <Compile Include="Core\DekaronCRUD.cs" />
+    <Compile Include="Core\DekaronQueries.cs" />
     <Compile Include="Core\IniFile.cs" />
-    <Compile Include="LiveMap\database.cs" />
+    <Compile Include="LiveMap\LMSQL.cs" />
     <Compile Include="LiveMap\Details.xaml.cs">
       <DependentUpon>Details.xaml</DependentUpon>
     </Compile>
-    <Compile Include="LiveMap\engine.cs" />
+    <Compile Include="LiveMap\Engine.cs" />
     <Compile Include="Loading.xaml.cs">
       <DependentUpon>Loading.xaml</DependentUpon>
     </Compile>

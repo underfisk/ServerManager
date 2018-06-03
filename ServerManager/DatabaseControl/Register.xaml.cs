@@ -1,32 +1,24 @@
 ﻿using MahApps.Metro.Controls;
 using MahApps.Metro.Controls.Dialogs;
+using ServerManager.Core;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net.Mail;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace ServerManager.DatabaseControl
 {
-    /// <summary>
-    /// Interaction logic for Register.xaml
-    /// </summary>
     public partial class Register : MetroWindow
     {
-        public Register()
-        {
-            InitializeComponent();
-        }
+        /// <summary>
+        /// Initializes the GUI components
+        /// </summary>
+        public Register() => InitializeComponent();
 
+        /// <summary>
+        /// Does an async task checking the fields in another thread
+        /// </summary>
+        /// <returns>boolean</returns>
         protected async Task<bool> checkFields()
         {
             //Verify is the 4 fields are blank or not
@@ -64,13 +56,17 @@ namespace ServerManager.DatabaseControl
             return true;
         }
 
+        /// <summary>
+        /// Tries to conver a given string to mailaddress object and if there are no errors than its a valid email
+        /// </summary>
+        /// <param name="emailaddress"></param>
+        /// <returns>boolean</returns>
         public bool IsValid(string emailaddress)
         {
             //Instead of regex i prefer to use MailClass
             try
             {
                 MailAddress m = new MailAddress(emailaddress);
-
                 return true;
             }
             catch (FormatException)
@@ -79,26 +75,28 @@ namespace ServerManager.DatabaseControl
             }
         }
 
+        /// <summary>
+        /// Handles the register click
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private async void register_Click(object sender, RoutedEventArgs e)
         {
-            dbfunc.editInfo h = new dbfunc.editInfo();
             bool y = await checkFields();
-            if (y == true)
+            if (y)
             {
-                if (!h.register(usr.Text, pw1.Text))
-                {
+                if (!DekaronCRUD.Register(usr.Text, pw1.Text))
                     await this.ShowMessageAsync("Account exists", "Please type another account username.");
-                }
                 else
-                {
-                    await this.ShowMessageAsync("Account created", "Your account was been created. ID=" + usr.Text + " PW=" + pw1.Text);
-                }  
+                    await this.ShowMessageAsync("Account created", $"Your account was been created. ID={usr.Text} PW={pw1.Text}");
             }
         }
 
-        private void cancel_Click(object sender, RoutedEventArgs e)
-        {
-            this.Close();
-        }
+        /// <summary>
+        /// Handles the cancel click 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void cancel_Click(object sender, RoutedEventArgs e) => Close();
     }
 }

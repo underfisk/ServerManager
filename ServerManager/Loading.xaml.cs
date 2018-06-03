@@ -1,28 +1,20 @@
 ﻿using MahApps.Metro.Controls;
 using MahApps.Metro.Controls.Dialogs;
-using System;
-using System.Collections.Generic;
 using System.Data.SqlClient;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
-
 
 namespace ServerManager
 {
-
     public partial class Loading : MetroWindow
     {
+        /// <summary>
+        /// Instance object to read ini file
+        /// </summary>
         IniFile configFile = new IniFile();
+
+        /// <summary>
+        /// Initializes the base data
+        /// </summary>
         public Loading()
         {
             InitializeComponent();
@@ -30,12 +22,13 @@ namespace ServerManager
             load.IsActive = false;
         }
 
+        /// <summary>
+        /// Verifies if exists the base sql configuration in the ini file
+        /// </summary>
         protected void checkConfig()
         {
             if (configFile.Read("SQL IP", "MSSQL") == "")
-            {
-                MessageBox.Show("We recommend you to save your info for further use", "Save for further use", MessageBoxButton.OK , MessageBoxImage.Information);
-            }
+                MessageBox.Show("We recommend you to save your info for further use", "Save for further use", MessageBoxButton.OK, MessageBoxImage.Information);
             else
             {
                 sqlip.Text = configFile.Read("SQL IP", "MSSQL");
@@ -45,7 +38,11 @@ namespace ServerManager
             }
         }
 
-
+        /// <summary>
+        /// Handles the overwrite button
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private async void button1_Click(object sender, RoutedEventArgs e)
         {
             configFile.Write("SQL IP", sqlip.Text, "MSSQL");
@@ -55,9 +52,12 @@ namespace ServerManager
             await this.ShowMessageAsync("Information updated", "Your sql information is updated!");
         }
 
+        /// <summary>
+        /// Handles the connection test button
+        /// </summary>
         protected async void conTest()
         {
-            if (configFile.Read("World Port","PORTS") == "")
+            if (configFile.Read("World Port", "PORTS") == "")
             {
                 configFile.Write("World Port", "50005", "PORTS");
                 configFile.Write("Arena Port", "60006", "PORTS");
@@ -71,8 +71,7 @@ namespace ServerManager
                 configFile.Write("Server Action", "A9", "ACTION");
             }
 
-            string cn = "Data Source=" + sqlip.Text + "," + sqlport.Text +"; Network Library=DBMSSOCN; Initial Catalog=" + "account" + "; User ID=" + sqlusr.Text + "; Password=" + sqlpwd.Text + ";";
-
+            string cn = $"Data Source={sqlip.Text},{sqlport.Text}; Network Library=DBMSSOCN; Initial Catalog=account; User ID={sqlusr.Text}; Password={sqlpwd.Text};";
 
             using (SqlConnection cnn = new SqlConnection(cn))
             {
@@ -98,16 +97,22 @@ namespace ServerManager
                 {
                     load.IsActive = false;
                     connect.IsEnabled = true;
-                    await this.ShowMessageAsync("Connection string is wrong or login failed","Check your connection info and make sure SQL TCP/IP is available.",MessageDialogStyle.Affirmative);
+                    await this.ShowMessageAsync("Connection string is wrong or login failed", "Check your connection info and make sure SQL TCP/IP is available.", MessageDialogStyle.Affirmative);
                 }
             }
         }
+
+        /// <summary>
+        /// Handles the connect click
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void connect_Click(object sender, RoutedEventArgs e)
         {
             connect.IsEnabled = false;
             load.IsActive = true;
             conTest();
-        
+
         }
     }
 }

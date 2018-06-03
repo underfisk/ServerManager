@@ -1,42 +1,35 @@
 ﻿using MahApps.Metro.Controls;
 using MahApps.Metro.Controls.Dialogs;
+using ServerManager.Core;
 using System;
-using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
-using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
+
 
 namespace ServerManager.DatabaseControl
 {
-
     public partial class Cash : MetroWindow
     {
-        getInfos get = new getInfos();
-        public Cash()
-        {
-            InitializeComponent();
-        }
+        /// <summary>
+        /// Initializes GUI Componenents 
+        /// </summary>
+        public Cash() => InitializeComponent();
 
-        dbfunc.editInfo s = new dbfunc.editInfo();
-        DataTable dt = new DataTable();
+        /// <summary>
+        /// Database used for cash
+        /// </summary>
+        private DataTable dt = new DataTable();
 
-        /*
-         * Load cash to the textbox for user can edit
-         */
+        /// <summary>
+        /// Loads the d-shop caash to the textbox so the user can edit it
+        /// </summary>
+        /// <param name="name"></param>
         public void LoadCash(string name)
         {
-            using (var con = new SqlConnection(get.cn))
+            using (var con = new SqlConnection(DekaronQueries.cn))
             {
                 try
                 {
@@ -58,10 +51,14 @@ namespace ServerManager.DatabaseControl
             }
         }
 
-        // Get user number recursive
+        /// <summary>
+        /// Gets the user_no from the database as parameter
+        /// </summary>
+        /// <param name="k"></param>
+        /// <returns>user_no if cfound</returns>
         public int GetUserNo(string k)
         {
-            using (var con = new SqlConnection(get.cn))
+            using (var con = new SqlConnection(DekaronQueries.cn))
             {
                 con.Open();
                 var cmd = new SqlCommand("Select * FROM account.dbo.USER_PROFILE WHERE user_id = @k", con);
@@ -72,15 +69,20 @@ namespace ServerManager.DatabaseControl
 
         }
 
+        /// <summary>
+        /// Small validation to check if the amount textbox or freeamount contains .
+        /// </summary>
+        /// <returns>boolean</returns>
         private bool validate()
         {
-            if (amount.Text.Contains(".") || freeamount.Text.Contains(".")) { return false; }
-            return true;
+            return amount.Text.Contains(".") || freeamount.Text.Contains(".") ? false : true;
         }
 
-        /*
-         * Save button works like- If the validation is valid then i dont let the cash be updated, else i do.
-         */
+        /// <summary>
+        /// Save button works like- If the validation is valid then i dont let the cash be updated, else i do.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private async void save_Btn_Click(object sender, RoutedEventArgs e)
         {
             if (!validate())
@@ -88,52 +90,56 @@ namespace ServerManager.DatabaseControl
                 await this.ShowMessageAsync("Invalid value", "The value is wrong, please enter a positive number");
             }
             else
-            using (var con = new SqlConnection(get.cn))
             {
-                try
+                using (var con = new SqlConnection(DekaronQueries.cn))
                 {
-                    string x = "UPDATE cash.dbo.user_cash SET id=@accid ,user_no=@k ,group_id=@groupid ,amount=@cash, free_amount=@cashfree WHERE user_no =@k";
-                    using (var cmd = new SqlCommand(x, con))
+                    try
                     {
-                        con.Open();
-                        cmd.Parameters.AddWithValue("@k", dt.Rows[0]["user_no"].ToString());
-                        cmd.Parameters.AddWithValue("@accid", dt.Rows[0]["id"].ToString());
-                        cmd.Parameters.AddWithValue("@groupid", dt.Rows[0]["group_id"].ToString());
-                        cmd.Parameters.AddWithValue("@cash", amount.Text);
-                        cmd.Parameters.AddWithValue("@cashfree", freeamount.Text);
-                        cmd.ExecuteNonQuery();
-                        con.Close();
-                        await this.ShowMessageAsync("Account cash updated", "Your account cash have been updated.");
-                        this.Close();
+                        string x = "UPDATE cash.dbo.user_cash SET id=@accid ,user_no=@k ,group_id=@groupid ,amount=@cash, free_amount=@cashfree WHERE user_no =@k";
+                        using (var cmd = new SqlCommand(x, con))
+                        {
+                            con.Open();
+                            cmd.Parameters.AddWithValue("@k", dt.Rows[0]["user_no"].ToString());
+                            cmd.Parameters.AddWithValue("@accid", dt.Rows[0]["id"].ToString());
+                            cmd.Parameters.AddWithValue("@groupid", dt.Rows[0]["group_id"].ToString());
+                            cmd.Parameters.AddWithValue("@cash", amount.Text);
+                            cmd.Parameters.AddWithValue("@cashfree", freeamount.Text);
+                            cmd.ExecuteNonQuery();
+                            con.Close();
+                            await this.ShowMessageAsync("Account cash updated", "Your account cash have been updated.");
+                            Close();
 
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show(ex.ToString());
                     }
                 }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(ex.ToString());
-                }
-
-
             }
         }
 
-        //i will try to parse allways for protect the input
+        /// <summary>
+        /// This function verifies if the given string is a number 
+        /// </summary>
+        /// <param name="txt"></param>
+        /// <returns>boolean </returns>
         private bool IsNumber(string txt)
         {
             int o;
             return int.TryParse(txt, out o);
         }
 
-        /*
-         * In previews i try to force the protection against characters.
-         * If i find a diff than number i will handle it
-         */
+
+        /// <summary>
+        /// If we find a different character in this function we handle it
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void amount_PreviewTextInput(object sender, TextCompositionEventArgs e)
         {
             if(e.Text != "." && !IsNumber(e.Text))
-            {
                 e.Handled = true;
-            }
             else if(e.Text == ".")
             {
                 if (((TextBox)sender).Text.IndexOf(e.Text) > -1)
@@ -144,12 +150,15 @@ namespace ServerManager.DatabaseControl
             }
         }
 
+        /// <summary>
+        /// Does the same as amount
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void freeamount_PreviewTextInput(object sender, TextCompositionEventArgs e)
         {
             if (e.Text != "." && !IsNumber(e.Text))
-            {
                 e.Handled = true;
-            }
             else if (e.Text == ".")
             {
                 if (((TextBox)sender).Text.IndexOf(e.Text) > -1)

@@ -4,16 +4,16 @@
 winexe
 C#
 .cs
-C:\Users\me\Desktop\Server Manager\ServerManager\ServerManager\obj\Debug\
+E:\GitHub Repos\ServerManager\ServerManager\obj\Debug\
 ServerManager
 none
 false
 DEBUG;TRACE
-C:\Users\me\Desktop\Server Manager\ServerManager\ServerManager\App.xaml
+E:\GitHub Repos\ServerManager\ServerManager\App.xaml
 61453931582
 
-15-387693585
-161930342237
+15-1968511689
+16-1202600371
 DatabaseControl\Cash.xaml;DatabaseControl\Character.xaml;DatabaseControl\Register.xaml;LiveMap\Details.xaml;Loading.xaml;MainMenu.xaml;
 
 False

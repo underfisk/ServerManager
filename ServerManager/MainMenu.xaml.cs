@@ -6,19 +6,20 @@ using System.Windows.Media.Imaging;
 using MahApps.Metro.Controls;
 using System.Windows.Interop;
 using MahApps.Metro.Controls.Dialogs;
-using System.Drawing.Printing;
-using System.Drawing;
-using System.Windows.Controls;
-using System.Windows.Shapes;
-using System.Text.RegularExpressions;
+using ServerManager.Core;
 
 namespace ServerManager
 {
-
     public partial class MainMenu : MetroWindow
     {
-        getInfos get = new getInfos();
+        /// <summary>
+        /// Saves the database configuration after being loaded
+        /// </summary>
         public static string IP, ID, PW, Port;
+
+        /// <summary>
+        /// IniFile Instance
+        /// </summary>
         IniFile config = new IniFile();
 
         public MainMenu()
@@ -28,7 +29,7 @@ namespace ServerManager
             Status();
             loadConfigs();
 
-            LiveMap.engine get = new LiveMap.engine(this) ; get.LoadMaps();
+            LiveMap.Engine get = new LiveMap.Engine(this); get.LoadMaps();
             this.editchar.MouseEnter += new MouseEventHandler(editchar_MouseEnter);
             this.editchar.MouseLeave += new MouseEventHandler(editchar_MouseLeave);
 
@@ -49,6 +50,9 @@ namespace ServerManager
 
         }
 
+        /// <summary>
+        /// Initializes the configs of ini file
+        /// </summary>
         protected void loadConfigs()
         {
             //MSSQL Load
@@ -173,10 +177,10 @@ namespace ServerManager
                                   IntPtr.Zero,
                                   Int32Rect.Empty,
                                   BitmapSizeOptions.FromEmptyOptions());
-            editchar.Background = new ImageBrush (transimage);
+            editchar.Background = new ImageBrush(transimage);
         }
 
-        public void editchar_MouseLeave(object sender,MouseEventArgs e)
+        public void editchar_MouseLeave(object sender, MouseEventArgs e)
         {
             var transimage = Imaging.CreateBitmapSourceFromHBitmap(Properties.Resources.editchar_normal.GetHbitmap(),
                       IntPtr.Zero,
@@ -185,153 +189,168 @@ namespace ServerManager
             editchar.Background = new ImageBrush(transimage);
         }
 
-        void Statics()
+        /// <summary>
+        /// Initializes on labels the dekaron server statistics
+        /// </summary>
+        protected void Statics()
         {
-            totaldfs.Content = get.Totaldfs();
-            totalguilds.Content = get.TotalGuilds();
-            totalcharacters.Content = get.TotalChars();
-            toppvp.Content = get.PVPRanking();
-            toppk.Content = get.PKRanking();
-            onlineplayers.Content = get.OnlinePlayers();
-            bannedplayers.Content = get.BannedPlayers();
-            totalaccounts.Content = get.TotalAccounts();
+            totaldfs.Content = DekaronQueries.Totaldfs();
+            totalguilds.Content = DekaronQueries.TotalGuilds();
+            totalcharacters.Content = DekaronQueries.TotalChars();
+            toppvp.Content = DekaronQueries.PVPRanking();
+            toppk.Content = DekaronQueries.PKRanking();
+            onlineplayers.Content = DekaronQueries.OnlinePlayers();
+            bannedplayers.Content = DekaronQueries.BannedPlayers();
+            totalaccounts.Content = DekaronQueries.TotalAccounts();
         }
 
-        void Status()
+        /// <summary>
+        /// Initializes on labels the dekaron server's status
+        /// </summary>
+        protected void Status()
         {
-            dksv.Content = get.tcp(Convert.ToInt32(config.Read("World Port","PORTS").ToString()));
-            arenasv.Content = get.tcp(Convert.ToInt32(config.Read("Arena Port","PORTS").ToString()));
-            loginsv.Content = get.tcp(Convert.ToInt32(config.Read("Login Port","PORTS").ToString()));
-            websv.Content = get.tcp(Convert.ToInt32(config.Read("Web Port","PORTS").ToString()));
+            dksv.Content = DekaronQueries.TcpConnect(Convert.ToInt32(config.Read("World Port", "PORTS").ToString()));
+            arenasv.Content = DekaronQueries.TcpConnect(Convert.ToInt32(config.Read("Arena Port", "PORTS").ToString()));
+            loginsv.Content = DekaronQueries.TcpConnect(Convert.ToInt32(config.Read("Login Port", "PORTS").ToString()));
+            websv.Content = DekaronQueries.TcpConnect(Convert.ToInt32(config.Read("Web Port", "PORTS").ToString()));
         }
 
-        private void refreshstatics_Click(object sender, RoutedEventArgs e)
-        {
-            Statics();
-        }
+        /// <summary>
+        /// Re-initializes the Statics
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void refreshstatics_Click(object sender, RoutedEventArgs e) => Statics();
 
-     
+        /// <summary>
+        /// Handles the edit character click
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private async void editchar_Click(object sender, RoutedEventArgs e)
         {
             var x = await this.ShowInputAsync("Database character edit", "Please type the character name to find");
             if (!String.IsNullOrWhiteSpace(x))
             {
-                dbfunc.editInfo d = new dbfunc.editInfo();
                 DatabaseControl.Character open = new DatabaseControl.Character();
 
-                if (!d.charExist(x))
-                {
+                if (!DekaronCRUD.CharacterExists(x))
                     await this.ShowMessageAsync("Character name is wrong or does not exist", "Please make sure you are finding for a valid char name");
-                }
                 else
                 {
                     open.searchCharacter(x);
                     open.ShowDialog();
                 }
-
             }
-            
         }
 
-
+        /// <summary>
+        /// Handles the delete account click
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private async void deleteaccount_Click(object sender, RoutedEventArgs e)
         {
             var accname = await this.ShowInputAsync("Database account delete", "Please type the account name to delete");
             if (!String.IsNullOrWhiteSpace(accname))
             {
-
-                dbfunc.editInfo d = new dbfunc.editInfo();
-                if (!d.accExist(accname))
+                if (!DekaronCRUD.AccountExists(accname))
                 {
                     await this.ShowMessageAsync("Account name is wrong or does not exist", "Please make sure you are finding for a valid account");
                 }
                 else
                 {
-                    var confirm = await this.ShowMessageAsync("Click OK to delete " + accname, "Please click OK to make sure you want to delete this account",MessageDialogStyle.AffirmativeAndNegative);
+                    var confirm = await this.ShowMessageAsync($"Click OK to delete {accname}", "Please click OK to make sure you want to delete this account", MessageDialogStyle.AffirmativeAndNegative);
                     if (confirm == MessageDialogResult.Affirmative)
                     {
-                        d.deleteacc(accname);
-                        await this.ShowMessageAsync("Account deleted", "Your account: [" + accname + "] was been sucessfully deleted!");
+                        DekaronCRUD.DeleteAccount(accname);
+                        await this.ShowMessageAsync("Account deleted", $"Your account: {accname} was been sucessfully deleted!");
                     }
                     else
-                    {
                         await this.ShowMessageAsync("Account not deleted", "Your account wasn't deleted!");
-                    }
                 }
             }
         }
 
-        
+        /// <summary>
+        /// Handles the new account click
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void newacc_Click(object sender, RoutedEventArgs e)
         {
             DatabaseControl.Register x = new DatabaseControl.Register();
             x.ShowDialog();
         }
 
+        /// <summary>
+        /// Handles the delete character click
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private async void deletechar_Click(object sender, RoutedEventArgs e)
         {
             var charname = await this.ShowInputAsync("Database character delete", "Please type the character name to delete");
             if (!String.IsNullOrWhiteSpace(charname))
             {
-                dbfunc.editInfo d = new dbfunc.editInfo();
-                if (!d.charExist(charname))
-                {
+                if (!DekaronCRUD.CharacterExists(charname))
                     await this.ShowMessageAsync("Character name is wrong or does not exist", "Please make sure you are finding for a valid character");
-                }
                 else
                 {
-                    var confirm = await this.ShowMessageAsync("Click OK to delete " + charname , "Please click OK to make sure you want to delete this character", MessageDialogStyle.AffirmativeAndNegative);
+                    var confirm = await this.ShowMessageAsync($"Click OK to delete {charname}", "Please click OK to make sure you want to delete this character", MessageDialogStyle.AffirmativeAndNegative);
                     if (confirm == MessageDialogResult.Affirmative)
                     {
-                        d.deletechar(charname);
-                        await this.ShowMessageAsync("Character deleted", "Your character: [" + charname + "] was been sucessfully deleted!");
+                        DekaronCRUD.DeleteCharacter(charname);
+                        await this.ShowMessageAsync("Character deleted", $"Your character: {charname} was been sucessfully deleted!");
                     }
                     else
-                    {
                         await this.ShowMessageAsync("Character not deleted", "Your Character wasn't deleted!");
-                    }
                 }
             }
         }
 
-        private void updateonline_Click(object sender, RoutedEventArgs e)
-        {
-            
-        }
-
+        /// <summary>
+        /// Changes the live map dekaron map
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void changemap_Click(object sender, RoutedEventArgs e)
         {
-            LiveMap.engine lm = new LiveMap.engine(this);
+            LiveMap.Engine lm = new LiveMap.Engine(this);
             lm.UpdateMap(mapList.SelectedIndex);
         }
 
+        /// <summary>
+        /// Handles the ban account click
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private async void banacc_Click(object sender, RoutedEventArgs e)
         {
             var charname = await this.ShowInputAsync("Database account ban", "Please type the account name to ban");
             if (!String.IsNullOrWhiteSpace(charname))
             {
-
-                dbfunc.editInfo d = new dbfunc.editInfo();
-                if (!d.accExist(charname))
-                {
+                if (!DekaronCRUD.AccountExists(charname))
                     await this.ShowMessageAsync("Account name is wrong or does not exist", "Please make sure you are finding for a valid acount");
-                }
                 else
                 {
-                    var confirm = await this.ShowMessageAsync("Click OK to ban" + charname  ,"Please click OK to make sure you want to ban this account", MessageDialogStyle.AffirmativeAndNegative);
+                    var confirm = await this.ShowMessageAsync($"Click OK to ban {charname}", "Please click OK to make sure you want to ban this account", MessageDialogStyle.AffirmativeAndNegative);
                     if (confirm == MessageDialogResult.Affirmative)
                     {
-                        d.BanPlayer(charname);
-                        await this.ShowMessageAsync("Account banned", "Your account: [" + charname + "] was been sucessfully banned!");
+                        DekaronCRUD.BanPlayer(charname);
+                        await this.ShowMessageAsync("Account banned", $"Your account: {charname} was been sucessfully banned!");
                     }
                     else
-                    {
                         await this.ShowMessageAsync("Account not banned", "Your account wasn't banned!");
-                    }
                 }
             }
         }
 
+        /// <summary>
+        /// Handles the save changes click
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private async void savechanges_Click(object sender, RoutedEventArgs e)
         {
             if ((string)savechanges.Content == "Edit")
@@ -350,44 +369,49 @@ namespace ServerManager
             }
             else
             {
-                config.Write("SQL IP", sqlipchange.Text,"MSSQL");
-                config.Write("SQL Port", sqlportchange.Text,"MSSQL");
-                config.Write("SQL Username", sqlidchange.Text,"MSSQL");
-                config.Write("SQL Password", sqlpwchange.Text,"MSSQL");
-                config.Write("Server Action", action.Text,"ACTION");
-                config.Write("World Port", worldedit.Text,"PORTS");
-                config.Write("Arena Port", arenaedit.Text,"PORTS");
-                config.Write("Login Port", loginedit.Text,"PORTS");
-                config.Write("Web Port", webedit.Text,"PORTS");
+                config.Write("SQL IP", sqlipchange.Text, "MSSQL");
+                config.Write("SQL Port", sqlportchange.Text, "MSSQL");
+                config.Write("SQL Username", sqlidchange.Text, "MSSQL");
+                config.Write("SQL Password", sqlpwchange.Text, "MSSQL");
+                config.Write("Server Action", action.Text, "ACTION");
+                config.Write("World Port", worldedit.Text, "PORTS");
+                config.Write("Arena Port", arenaedit.Text, "PORTS");
+                config.Write("Login Port", loginedit.Text, "PORTS");
+                config.Write("Web Port", webedit.Text, "PORTS");
                 await this.ShowMessageAsync("Config file updated", "Your config file was been updated!");
                 loadConfigs();
                 savechanges.Content = "Edit";
             }
         }
 
+        /// <summary>
+        /// Handles the detail view click
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void detailview_Click(object sender, RoutedEventArgs e)
         {
-            LiveMap.Details.mapcode= mapList.SelectedIndex;
+            LiveMap.Details.mapcode = mapList.SelectedIndex;
             LiveMap.Details x = new LiveMap.Details();
             x.ShowDialog();
         }
 
+        /// <summary>
+        /// Handles the edit coins click
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private async void editcoins_Click(object sender, RoutedEventArgs e)
         {
             var accid = await this.ShowInputAsync("Database edit coins", "Please type the account name to edit coins");
             if (!String.IsNullOrWhiteSpace(accid))
             {
-                dbfunc.editInfo d = new dbfunc.editInfo();
-                if (!d.accExist(accid))
-                {
+                if (!DekaronCRUD.AccountExists(accid))
                     await this.ShowMessageAsync("Account name is wrong or does not exist", "Please make sure you are finding for a valid acount");
-                }
                 else
                 {
-                    if (d.GetCash(d.PlayerNameByID(accid)) < 0)
-                    {
+                    if (DekaronCRUD.GetCash(DekaronCRUD.PlayerNameByID(accid)) < 0)
                         await this.ShowMessageAsync("Account coins is less than 0", "Your account haven't visited the d-shop yet");
-                    }
                     else
                     {
                         DatabaseControl.Cash x = new DatabaseControl.Cash();
@@ -398,15 +422,19 @@ namespace ServerManager
             }
         }
 
-        private void refreshstatus_Click(object sender, RoutedEventArgs e)
-        {
-            Status();
-        }
+        /// <summary>
+        /// Handles the refresh status click
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void refreshstatus_Click(object sender, RoutedEventArgs e) => Status();
 
-        private void button_Click(object sender, RoutedEventArgs e)
-        {
-            Environment.Exit(0);
-        }
+        /// <summary>
+        /// Handles the exit button click
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void button_Click(object sender, RoutedEventArgs e) => Environment.Exit(0);
 
     }
 }
