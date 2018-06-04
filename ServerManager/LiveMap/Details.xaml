@@ -1,0 +1,10 @@
+﻿<Window x:Class="ServerManager.LiveMap.Details"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ServerManager.LiveMap"
+        mc:Ignorable="d"
+        Title="Player Details" Height="378.649" Width="678.649" Icon="/ServerManager;component/Images/logo.ico" WindowStartupLocation="CenterScreen" ResizeMode="CanMinimize">
+    <DataGrid x:Name="data" HorizontalAlignment="Left" VerticalAlignment="Top" Height="343" Width="669" Background="{x:Null}"/>
+</Window>

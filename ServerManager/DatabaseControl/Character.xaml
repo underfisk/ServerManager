@@ -1,0 +1,123 @@
+﻿<Controls:MetroWindow x:Class="ServerManager.DatabaseControl.Character"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:Controls="http://metro.mahapps.com/winfx/xaml/controls"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ServerManager"
+        GlowBrush="{DynamicResource AccentColorBrush}"
+        mc:Ignorable="d"
+        Title="Character Editing Window" Height="581.026" Width="1281.033" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" Icon="/ServerManager;component/Images/logo.ico" WindowTitleBrush="#FFF9B420">
+    <Controls:MetroWindow.Background>
+        <ImageBrush ImageSource="/ServerManager;component/Images/editbg.png"/>
+    </Controls:MetroWindow.Background>
+    <Grid HorizontalAlignment="Left" Height="553" VerticalAlignment="Top" Width="1254" Margin="0,0,0,-1">
+        <Grid.Background>
+            <ImageBrush/>
+        </Grid.Background>
+        <Label x:Name="label" Content="Character Name:" HorizontalAlignment="Left" Margin="37,91,0,0" VerticalAlignment="Top" Background="{x:Null}" Foreground="White"/>
+        <Label x:Name="label1" Content="HP:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="293,53,0,0" Background="{x:Null}" Foreground="#FFFFFCFC"/>
+        <Label x:Name="label2" Content="StorageMoney:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="37,397,0,0" Foreground="White"/>
+        <Label x:Name="label3" Content="StoreMoney:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="37,349,0,0" Foreground="White"/>
+        <Label x:Name="label4" Content="Money:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="37,305,0,0" Foreground="White"/>
+        <Label x:Name="label5" Content="EXP:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="37,265,0,0" Background="{x:Null}" Foreground="White"/>
+        <Label x:Name="label6" Content="Adv.Points:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="37,178,0,0" Background="{x:Null}" Foreground="White"/>
+        <Label x:Name="label7" Content="dwPeerage:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="37,221,0,0" Foreground="White"/>
+        <Label x:Name="label8" Content="User Number:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="37,133,0,0" Background="{x:Null}" Foreground="White"/>
+        <Label x:Name="label9" Content="Character Nº:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="37,53,0,0" Foreground="White"/>
+        <TextBox x:Name="usernumber" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" Margin="140,134,0,0"/>
+        <TextBox x:Name="charnumber" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" Margin="140,54,0,0" IsEnabled="False"/>
+        <TextBox x:Name="charname" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" Margin="140,92,0,0"/>
+        <TextBox x:Name="hp" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" Margin="353,53,0,0"/>
+        <TextBox x:Name="storagemoney" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" Margin="140,397,0,0"/>
+        <TextBox x:Name="storemoney" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" Margin="140,350,0,0"/>
+        <TextBox x:Name="money" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" Margin="140,305,0,0"/>
+        <TextBox x:Name="exp" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" Margin="140,265,0,0"/>
+        <TextBox x:Name="dwpeerage" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" Margin="140,221,0,0"/>
+        <TextBox x:Name="advpoints" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" Margin="140,178,0,0"/>
+        <Label x:Name="label10" Content="STR:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="293,132,0,0" Foreground="#FFFFFCFC"/>
+        <Label x:Name="label11" Content="MP:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="295,91,0,0" Background="{x:Null}" Foreground="White"/>
+        <TextBox x:Name="str" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" Margin="353,133,0,0"/>
+        <TextBox x:Name="mp" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" Margin="353,92,0,0"/>
+        <Label x:Name="label12" Content="SPR:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="295,255,0,0" Foreground="White"/>
+        <Label x:Name="label13" Content="DEX:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="293,177,0,0" Foreground="White"/>
+        <TextBox x:Name="spr" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" Margin="353,255,0,0"/>
+        <TextBox x:Name="dex" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" Margin="353,177,0,0"/>
+        <Label x:Name="label14" Content="RetPosY:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="284,421,0,0" Foreground="White"/>
+        <Label x:Name="label15" Content="RetPosX:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="284,385,0,0" Foreground="White"/>
+        <Label x:Name="label16" Content="PosY:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="295,349,0,0" Foreground="White"/>
+        <Label x:Name="label17" Content="PosX:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="293,305,0,0" Foreground="White"/>
+        <Label x:Name="label18" Content="PC Class:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="504,265,0,0" Background="{x:Null}" Foreground="White"/>
+        <Label x:Name="label19" Content="RetMapIndex:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="503,92,0,0" Foreground="White"/>
+        <Label x:Name="label20" Content="StatPoint:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="503,134,0,0" Background="{x:Null}" Foreground="White"/>
+        <Label x:Name="label21" Content="MapIndex:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="503,54,0,0" Background="{x:Null}" Foreground="White"/>
+        <TextBox x:Name="posy" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" Margin="353,349,0,0"/>
+        <TextBox x:Name="posx" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" Margin="353,312,0,0"/>
+        <TextBox x:Name="retposy" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" Margin="353,421,0,0"/>
+        <TextBox x:Name="retposx" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" Margin="353,390,0,0"/>
+        <TextBox x:Name="retmapindex" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" Margin="598,91,0,0"/>
+        <TextBox x:Name="mapindex" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" Margin="598,55,0,0"/>
+        <TextBox x:Name="statpoint" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" Margin="598,132,0,0"/>
+        <Button x:Name="saveBtn" Content="Update" HorizontalAlignment="Left" Margin="460,473,0,0" VerticalAlignment="Top" Width="108" Height="45" Background="#FF34BF1E" Foreground="White" Click="saveBtn_Click"/>
+        <Button x:Name="cancelBtn" Content="Cancel" HorizontalAlignment="Left" Margin="645,473,0,0" VerticalAlignment="Top" Width="94" Height="45" Background="#FFE2B008" Foreground="White" Click="cancelBtn_Click"/>
+        <Label x:Name="label22" Content="Direction:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="504,305,0,0" Foreground="White"/>
+        <Label x:Name="label23" Content="Level:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="503,219,0,0" Background="{x:Null}" Foreground="White"/>
+        <Label x:Name="label24" Content="SkillPoint:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="503,178,0,0" Background="{x:Null}" Foreground="White"/>
+        <TextBox x:Name="retdirection" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" Margin="598,349,0,0"/>
+        <TextBox x:Name="direction" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" Margin="598,306,0,0"/>
+        <TextBox x:Name="pcclass" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" Margin="598,266,0,0"/>
+        <TextBox x:Name="level" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" Margin="598,219,0,0"/>
+        <TextBox x:Name="skillpoint" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" Margin="598,177,0,0"/>
+        <TextBox x:Name="skillclearcount" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" Margin="598,397,0,0"/>
+        <Label x:Name="label25" Content="Skill Clear Count:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="499,395,0,0" Background="{x:Null}" Foreground="White"/>
+        <Label x:Name="label26" Content="RetDirection:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="504,349,0,0" Foreground="White"/>
+        <Label x:Name="label27" Content="PK Count:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="734,91,0,0" Foreground="White"/>
+        <Label x:Name="label28" Content="Stat Clear Count:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="734,55,0,0" Foreground="White"/>
+        <TextBox x:Name="pkcount" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" Margin="839,91,0,0"/>
+        <TextBox x:Name="statclearcount" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" Margin="840,55,0,0"/>
+        <Label x:Name="label29" Content="Shield:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="734,177,0,0" Foreground="White"/>
+        <Label x:Name="label30" Content="Chaotic Level:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="734,134,0,0" Foreground="White"/>
+        <TextBox x:Name="shield" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" Margin="839,178,0,0"/>
+        <TextBox x:Name="chaoticlevel" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" Margin="839,134,0,0"/>
+        <Label x:Name="label31" Content="Login Flag:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="734,266,0,0" Foreground="White"/>
+        <Label x:Name="label32" Content="dwFlag:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="734,219,0,0" Foreground="White"/>
+        <Label x:Name="label33" Content="Draw Record:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="1013,54,0,0" Foreground="White"/>
+        <Label x:Name="label34" Content="Lose Record:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="734,395,0,0" Foreground="White"/>
+        <Label x:Name="label35" Content="Win Record:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="734,350,0,0" Foreground="White"/>
+        <Label x:Name="label36" Content="PVP Point:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="734,305,0,0" Foreground="White"/>
+        <TextBox x:Name="winrecord" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" Margin="839,351,0,0"/>
+        <TextBox x:Name="pvppoint" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" Margin="840,306,0,0"/>
+        <TextBox x:Name="loginflag" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" Margin="839,267,0,0"/>
+        <TextBox x:Name="flag" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" Margin="839,222,0,0" SelectionOpacity="4"/>
+        <TextBox x:Name="loserecord" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" Margin="839,395,0,0"/>
+        <Label x:Name="label37" Content="Division EXP:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="1013,178,0,0" Foreground="White"/>
+        <Label x:Name="label38" Content="Storage Count:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="1013,132,0,0" Foreground="White"/>
+        <Label x:Name="label39" Content="Supply Point:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="1013,92,0,0" Foreground="White"/>
+        <TextBox x:Name="supplypoint" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" Margin="1124,93,0,0"/>
+        <TextBox x:Name="drawrecord" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" Margin="1124,53,0,0"/>
+        <TextBox x:Name="divisionexp" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" Margin="1124,177,0,0"/>
+        <TextBox x:Name="storagecount" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" Margin="1124,135,0,0"/>
+        <Label x:Name="label41" Content="Store Expansion:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="1013,222,0,0" Background="{x:Null}" Foreground="White"/>
+        <Label x:Name="label42" Content="PPoints:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="1013,403,0,0" Foreground="White"/>
+        <Label x:Name="label43" Content="Awakening:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="1013,267,0,0" Foreground="White"/>
+        <TextBox x:Name="ppoints" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" Margin="1124,397,0,0"/>
+        <TextBox x:Name="awakening" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" Margin="1124,268,0,0"/>
+        <TextBox x:Name="storeexpansion" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" Margin="1124,223,0,0"/>
+        <Label x:Name="label40" Content="Division Grade:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="1013,312,0,0">
+            <Label.Foreground>
+                <SolidColorBrush Color="{DynamicResource {x:Static SystemColors.HighlightTextColorKey}}"/>
+            </Label.Foreground>
+        </Label>
+        <TextBlock x:Name="textBlock" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top"><Run Text="TextBlock"/></TextBlock>
+        <TextBlock x:Name="textBlock1" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top"><Run Text="TextBlock"/></TextBlock>
+        <TextBox x:Name="divisiongrade" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" Margin="1124,315,0,0"/>
+        <TextBox x:Name="grade" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" Margin="1124,358,0,0"/>
+        <Label x:Name="label44" Content="Grade:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="1013,358,0,0">
+            <Label.Foreground>
+                <SolidColorBrush Color="{DynamicResource {x:Static SystemColors.HighlightTextColorKey}}"/>
+            </Label.Foreground>
+        </Label>
+        <TextBox x:Name="wcon" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" Margin="353,221,0,0" RenderTransformOrigin="0.508,0.346"/>
+        <Label x:Name="label45" Content="Con" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="294,219,0,0" Foreground="White"/>
+    </Grid>
+</Controls:MetroWindow>
